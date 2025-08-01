@@ -8,10 +8,11 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject swordObject; 
     public Animator swordAnimator;
+    public Animator animator;
 
     private Rigidbody2D rb;
     private Vector2 movement;
-    private Animator animator;
+
 
     private bool isMoving = false;
     private int currentDirection = 0; 
@@ -21,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+
     }
 
     void Update()
@@ -93,27 +94,28 @@ public class PlayerMovement : MonoBehaviour
         switch (currentDirection)
         {
             case 1:
-                swordObject.transform.localPosition = new Vector2(0, 0.2f);
+                swordObject.transform.localPosition = new Vector2(0, 0.5f);
                 swordObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 break;
             case 2:
-                swordObject.transform.localPosition = new Vector2(0, -0.2f);
+                swordObject.transform.localPosition = new Vector2(0, -0.5f);
                 swordObject.transform.localRotation = Quaternion.Euler(0, 0, 180);
                 break;
             case 3:
-                swordObject.transform.localPosition = new Vector2(0.2f, 0);
+                swordObject.transform.localPosition = new Vector2(0.5f, 0);
                 swordObject.transform.localRotation = Quaternion.Euler(0, 0, 270);
                 break;
             case 4:
-                swordObject.transform.localPosition = new Vector2(-0.2f, 0);
+                swordObject.transform.localPosition = new Vector2(-0.5f, 0);
                 swordObject.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 break;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         swordObject.SetActive(false);
 
-        yield return new WaitForSeconds(0.5f); 
+        yield return new WaitForSeconds(0.3f); 
         canAttack = true;
     }
+    
 }
