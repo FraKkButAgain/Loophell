@@ -1,23 +1,36 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    
+
+    private List<int> actionQueue = new List<int> { 0, 1, 2 };
 
     public GameObject swordObject; 
     public Animator swordAnimator;
     public Animator animator;
+    public GameObject projectilePrefab;
 
     private Rigidbody2D rb;
     private Vector2 movement;
 
-
+    
     private bool isMoving = false;
     private int currentDirection = 0; 
 
-    private bool canAttack = true;
+    private bool canAct = true;
+
+    private bool isDashing = false;
+    public float dashSpeed = 10f;
+    public float dashDuration = 0.3f;
+
+    private Vector2 lastMoveDirection = Vector2.down;
+
+
 
     void Start()
     {
@@ -34,19 +47,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (keyboard != null)
         {
-            movement.x = (keyboard.aKey.isPressed ? -1f : 0f) + (keyboard.dKey.isPressed ? 1f : 0f);
-            movement.y = (keyboard.sKey.isPressed ? -1f : 0f) + (keyboard.wKey.isPressed ? 1f : 0f);
+            movement.x = (keyboard.leftArrowKey.isPressed ? -1f : 0f) + (keyboard.rightArrowKey.isPressed ? 1f : 0f);
+            movement.y = (keyboard.downArrowKey.isPressed ? -1f : 0f) + (keyboard.upArrowKey.isPressed ? 1f : 0f);
         }
 
-    if (Keyboard.current.zKey.wasPressedThisFrame && canAttack)
-    {
-        StartCoroutine(AttackSword());
-    }
-
-
-
-
-        bool nowMoving = movement.sqrMagnitude > 0.01f;
+    bool nowMoving = movement.sqrMagnitude > 0.01f;
 
 
         if (nowMoving != isMoving)
@@ -66,11 +71,24 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetFloat("Direction", (float)currentDirection);
             }
         }
+
+        // movimentos aqui:
+        // 
+
+        if (Keyboard.current.zKey.wasPressedThisFrame)
+        {
+            HandleAction();
+        }
+
+
     }
 
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
+        if (!isDashing)
+        {
+            rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
+        }
     }
 
     private int GetDirectionFromInput(Vector2 input)
@@ -81,15 +99,68 @@ public class PlayerMovement : MonoBehaviour
             return input.x > 0 ? 3 : 4;
     }
 
+    // faz as ações acontecerem
+    private void HandleAction()
+    {
+        if (actionQueue.Count == 0) return;
+
+        int action = actionQueue[0];
+        actionQueue.RemoveAt(0);    
+        actionQueue.Add(action);      
+
+        switch (action)
+        {
+            case 0:
+                if (canAct)
+                    StartCoroutine(AttackSword());
+                break;
+
+            case 1:
+                if (canAct)
+                    StartCoroutine(Dash());
+                    animator.SetTrigger("Dash");
+                break;
+
+            case 2:
+                if (canAct)
+                ShootProjectile();
+                break;
+        }
+    }
+
+    // movimentos aqui
+
+    private IEnumerator Dash()
+    {
+        canAct = false;
+        isDashing = true;
+
+        Vector2 dashDirection = movement.sqrMagnitude > 0.01f ? movement.normalized : Vector2.zero;
+        float dashTime = 0f;
+
+        while (dashTime < dashDuration)
+        {
+            if (dashDirection != Vector2.zero)
+            {
+                rb.MovePosition(rb.position + dashDirection * dashSpeed * Time.fixedDeltaTime);
+            }
+
+            dashTime += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
+        isDashing = false;
+
+        yield return new WaitForSeconds(0.3f); 
+        canAct = true;
+    }
 
     private IEnumerator AttackSword()
     {
-        canAttack = false;
+        canAct = false;
 
         animator.SetTrigger("Attack");
         swordObject.SetActive(true);
-
-
 
         switch (currentDirection)
         {
@@ -110,12 +181,44 @@ public class PlayerMovement : MonoBehaviour
                 swordObject.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 break;
         }
+                
+        
+        yield return new WaitForSeconds(0.3f);
+        canAct = true;
 
         yield return new WaitForSeconds(0.3f);
         swordObject.SetActive(false);
 
-        yield return new WaitForSeconds(0.3f); 
-        canAttack = true;
+
     }
     
+    private void ShootProjectile()
+    {
+        Vector3 spawnPosition = transform.position;
+
+        Quaternion rotation = Quaternion.identity;
+
+        switch (currentDirection)
+        {
+            case 1: 
+                rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case 2:
+                rotation = Quaternion.Euler(0, 0, 180);
+                break;
+            case 3:
+                rotation = Quaternion.Euler(0, 0, -90);
+                break;
+            case 4: 
+                rotation = Quaternion.Euler(0, 0, 90);
+                break;
+        }
+        
+
+        GameObject projectile = Instantiate(projectilePrefab, spawnPosition, rotation);
+        Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+    
+    }
+
+
 }
