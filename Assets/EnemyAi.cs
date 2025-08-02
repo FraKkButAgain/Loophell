@@ -6,6 +6,8 @@ public class EnemyAI : MonoBehaviour
 {
     // Configurações
     public GameObject swordPrefab;
+    public GameObject bombPrefab;
+    public GameObject arrowPrefab;
 
     public float tileSize = 2f;
     public int maxHealth = 3;
@@ -86,6 +88,14 @@ public class EnemyAI : MonoBehaviour
             case 6:
                 Attack();
                 break;
+
+            case 7:
+                ShootArrow();
+                break;
+
+            case 8:
+                ThrowBomb();
+                break;
             default:
 
                 break;
@@ -143,6 +153,39 @@ public class EnemyAI : MonoBehaviour
         }
 
         sword.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    private void ShootArrow()
+    {
+        Vector2 spawnOffset = directionToVector[currentDirection] * 1f;
+        Vector2 spawnPosition = (Vector2)transform.position + spawnOffset;
+
+        GameObject arrow = Instantiate(arrowPrefab, spawnPosition, Quaternion.identity);
+
+        float angle = 0f;
+        switch (currentDirection)
+        {
+            case 1: angle = 0f; break;     // cima
+            case 2: angle = 180f; break;   // baixo
+            case 3: angle = 90f; break;    // esquerda
+            case 4: angle = -90f; break;   // direita
+        }
+
+        arrow.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+
+    private void ThrowBomb()
+    {
+        Vector2 spawnOffset = directionToVector[currentDirection] * 1f;
+        Vector2 spawnPosition = (Vector2)transform.position + spawnOffset;
+
+        GameObject bomb = Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
+
+        Bomb bombScript = bomb.GetComponent<Bomb>();
+        if (bombScript != null)
+        {
+            bombScript.PushInDirection(directionToVector[currentDirection], 2f); 
+        }
     }
 
     // bullshit
