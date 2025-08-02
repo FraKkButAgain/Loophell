@@ -6,7 +6,7 @@ public class Explosion : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("acertou inimigo");
+
             EnemyAI enemy = other.GetComponent<EnemyAI>();
             if (enemy != null)
             {
@@ -22,6 +22,10 @@ public class Explosion : MonoBehaviour
                 player.TakeDamage(0);   
 
             }
+        }
+        else if (other.CompareTag("Breakable"))
+        {
+            Destroy(other.gameObject);
         }
     }
 }

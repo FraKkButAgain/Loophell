@@ -43,6 +43,10 @@ public class PlayerMovement : MonoBehaviour
 
     public float hurtForce = 5f;
 
+    public GameObject shieldObject;
+    private bool isBlocking = false;
+    private bool canExitBlock = false;
+
 
 
     void Start()
@@ -55,8 +59,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Read input
-        var gamepad = Gamepad.current;
+        if (isBlocking && !canExitBlock)
+        {
+            return; // impede input, movimento e ações
+        }
+
         var keyboard = Keyboard.current;
         
 
@@ -146,6 +153,9 @@ public class PlayerMovement : MonoBehaviour
             case 3:
                 SpawnBomb();
                 break;
+            case 4:
+                StartCoroutine(Block());
+                break;
         }
     }
 
@@ -208,6 +218,7 @@ public class PlayerMovement : MonoBehaviour
                 sword.transform.localPosition = new Vector2(0.5f, 0);
                 sword.transform.localRotation = Quaternion.Euler(0, 0, 270);
                 break;
+            
         }
 
         var playerCol = GetComponent<Collider2D>();
@@ -266,10 +277,41 @@ public class PlayerMovement : MonoBehaviour
         Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
     }
 
+    private IEnumerator Block()
+        {
+            isBlocking = true;
+            isInvincible = true;
+            shieldObject.SetActive(true);
+            rb.linearVelocity = Vector2.zero;
+            canExitBlock = false;
+
+            yield return new WaitForSeconds(1f); 
+
+            canExitBlock = true;
+
+            while (isBlocking)
+            {
+                if (movement.sqrMagnitude > 0.01f || Keyboard.current.zKey.wasPressedThisFrame)
+                {
+                    BreakBlock();
+                    break;
+                }
+
+                yield return null;
+            }
+        }
+
     public void TakeDamage(int attackDirection)
     {   
 
-        if (isInvincible || isDashing) return;
+        if (isDashing) return;
+        if (isBlocking)
+        {
+            BreakBlock(); 
+            return;
+        }
+
+        if (isInvincible) return;
 
         currentHealth--;
         animator.SetTrigger("Hurt");
@@ -350,6 +392,13 @@ private IEnumerator HurtRoutine()
     {
         currentHealth = 0;
         Die();
+    }
+
+    private void BreakBlock()
+    {
+        isBlocking = false;
+        isInvincible = false;
+        shieldObject.SetActive(false);
     }
 
 }

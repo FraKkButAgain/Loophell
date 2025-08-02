@@ -135,10 +135,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordPrefab: {fileID: 1175288568825576916, guid: 45f7ace66dc67f74a8650581ceef6a17, type: 3}
+  bombPrefab: {fileID: 0}
   arrowPrefab: {fileID: 443870100169868094, guid: e50aa40aeeb7e2d408770652d84c76e2, type: 3}
   tileSize: 2
   maxHealth: 3
-  actionSequence: 01000000000000000000000000000000000000000000000000000000
+  actionSequence: 00000000000000000000000000000000000000000000000000000000
   timeBetweenActions: 1.5
 --- !u!50 &7644527056542207938
 Rigidbody2D:
