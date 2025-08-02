@@ -5,12 +5,16 @@ using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private SpriteRenderer spriteRenderer;
     public float moveSpeed = 5f;
+
+    public float actionCooldown = 1.2f; 
+    private float lastActionTime = -999f;
     
 
     private List<int> actionQueue = new List<int> { 0, 1, 2 };
 
-    public GameObject swordObject; 
+    public GameObject swordPrefab;
     public Animator swordAnimator;
     public Animator animator;
     public GameObject projectilePrefab;
@@ -22,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving = false;
     private int currentDirection = 0; 
 
-    private bool canAct = true;
+
 
     private bool isDashing = false;
     public float dashSpeed = 10f;
@@ -30,11 +34,21 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 lastMoveDirection = Vector2.down;
 
+    public int maxHealth = 3;
+    private int currentHealth;
+
+    private bool isInvincible = false;
+    private bool isStunned = false;
+
+    public float hurtForce = 5f;
+
 
 
     void Start()
     {
+        spriteRenderer = transform.Find("Square").GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
 
     }
 
@@ -85,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isDashing)
+        if (isStunned || isDashing) return;
         {
             rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
         }
@@ -102,27 +116,29 @@ public class PlayerMovement : MonoBehaviour
     // faz as ações acontecerem
     private void HandleAction()
     {
+        if (Time.time < lastActionTime + actionCooldown)
+            return; 
+
+        lastActionTime = Time.time;
+
         if (actionQueue.Count == 0) return;
 
         int action = actionQueue[0];
-        actionQueue.RemoveAt(0);    
-        actionQueue.Add(action);      
+        actionQueue.RemoveAt(0);
+        actionQueue.Add(action);
 
         switch (action)
         {
             case 0:
-                if (canAct)
-                    StartCoroutine(AttackSword());
+                StartCoroutine(AttackSword());
                 break;
 
             case 1:
-                if (canAct)
-                    StartCoroutine(Dash());
-                    animator.SetTrigger("Dash");
+                StartCoroutine(Dash());
+                animator.SetTrigger("Dash");
                 break;
 
             case 2:
-                if (canAct)
                 ShootProjectile();
                 break;
         }
@@ -132,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Dash()
     {
-        canAct = false;
+
         isDashing = true;
 
         Vector2 dashDirection = movement.sqrMagnitude > 0.01f ? movement.normalized : Vector2.zero;
@@ -151,45 +167,54 @@ public class PlayerMovement : MonoBehaviour
 
         isDashing = false;
 
-        yield return new WaitForSeconds(0.3f); 
-        canAct = true;
+
     }
 
     private IEnumerator AttackSword()
     {
-        canAct = false;
 
         animator.SetTrigger("Attack");
-        swordObject.SetActive(true);
+
+        
+
+
+        GameObject sword = Instantiate(swordPrefab, transform);
+
+        Animator swordAnimator = sword.GetComponent<Animator>();
+        if (swordAnimator != null)
+            swordAnimator.SetTrigger("Attack");
+
 
         switch (currentDirection)
         {
-            case 1:
-                swordObject.transform.localPosition = new Vector2(0, 0.5f);
-                swordObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            case 1: // cima
+                sword.transform.localPosition = new Vector2(0, 0.5f);
+                sword.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 break;
-            case 2:
-                swordObject.transform.localPosition = new Vector2(0, -0.5f);
-                swordObject.transform.localRotation = Quaternion.Euler(0, 0, 180);
+            case 2: // baixo
+                sword.transform.localPosition = new Vector2(0, -0.5f);
+                sword.transform.localRotation = Quaternion.Euler(0, 0, 180);
                 break;
-            case 3:
-                swordObject.transform.localPosition = new Vector2(0.5f, 0);
-                swordObject.transform.localRotation = Quaternion.Euler(0, 0, 270);
+            case 4: // esquerda
+                sword.transform.localPosition = new Vector2(-0.5f, 0);
+                sword.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 break;
-            case 4:
-                swordObject.transform.localPosition = new Vector2(-0.5f, 0);
-                swordObject.transform.localRotation = Quaternion.Euler(0, 0, 90);
+            case 3: // direita
+                sword.transform.localPosition = new Vector2(0.5f, 0);
+                sword.transform.localRotation = Quaternion.Euler(0, 0, 270);
                 break;
         }
-                
-        
-        yield return new WaitForSeconds(0.3f);
-        canAct = true;
+
+        var playerCol = GetComponent<Collider2D>();
+        var swordCol = sword.GetComponent<Collider2D>();
+        if (playerCol && swordCol)
+            Physics2D.IgnoreCollision(playerCol, swordCol, true);
+
+        yield return new WaitForSeconds(0.5f);
+
 
         yield return new WaitForSeconds(0.3f);
-        swordObject.SetActive(false);
-
-
+        if (sword) Destroy(sword);
     }
     
     private void ShootProjectile()
@@ -218,6 +243,85 @@ public class PlayerMovement : MonoBehaviour
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, rotation);
         Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), GetComponent<Collider2D>());
     
+    }
+
+    public void TakeDamage(int attackDirection)
+    {
+        if (isInvincible || isDashing) return;
+
+        currentHealth--;
+        animator.SetTrigger("Hurt");
+
+        StartCoroutine(ApplyKnockback(attackDirection));
+
+        StartCoroutine(HurtRoutine());
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+private IEnumerator HurtRoutine()
+{
+    isStunned = true;
+    isInvincible = true;
+    
+    StartCoroutine(FlashWhileInvincible());
+
+        yield return new WaitForSeconds(0.3f); 
+        rb.linearVelocity = Vector2.zero;            
+        yield return new WaitForSeconds(0.7f); 
+        isStunned = false;
+
+        yield return new WaitForSeconds(2f);  
+        isInvincible = false;
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+
+    }   
+    private IEnumerator ApplyKnockback(int direction)
+    {
+        Vector2 knockbackDir = Vector2.zero;
+
+        switch (direction)
+        {
+            case 1: knockbackDir = Vector2.up; break;
+            case 2: knockbackDir = Vector2.down; break;
+            case 3: knockbackDir = Vector2.left; break;
+            case 4: knockbackDir = Vector2.right; break;
+            default: knockbackDir = Vector2.zero; break;
+        }
+
+        Vector2 start = rb.position;
+        Vector2 target = start + knockbackDir * 1f; 
+        float duration = 0.2f; 
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            rb.MovePosition(Vector2.Lerp(start, target, elapsed / duration));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.MovePosition(target);
+    }
+    
+    private IEnumerator FlashWhileInvincible()
+    {
+        while (isInvincible)
+        {
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        spriteRenderer.enabled = true;
     }
 
 
