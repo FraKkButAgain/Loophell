@@ -489,12 +489,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   actionCooldown: 0.75
+  actionQueue: 03000000030000000300000003000000
+  bombPrefab: {fileID: 1175288568825576916, guid: f81938642bf27774eaf9c80b694651db, type: 3}
   swordPrefab: {fileID: 3834783065429549447}
   swordAnimator: {fileID: 3713471294491861267}
   animator: {fileID: 1709742635107001025}
   projectilePrefab: {fileID: 4696327422337924411, guid: 6d35707a0099c3a48a168ccf38452e3b, type: 3}
   dashSpeed: 15
   dashDuration: 0.5
+  maxHealth: 3
+  hurtForce: 5
 --- !u!1001 &4143076192770060670
 PrefabInstance:
   m_ObjectHideFlags: 0

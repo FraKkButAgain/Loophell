@@ -12,8 +12,9 @@ public class PlayerMovement : MonoBehaviour
     private float lastActionTime = -999f;
     
 
-    private List<int> actionQueue = new List<int> { 0, 1, 2 };
+    public List<int> actionQueue = new List<int> { 0, 1, 2, 3 };
 
+    public GameObject bombPrefab;
     public GameObject swordPrefab;
     public Animator swordAnimator;
     public Animator animator;
@@ -141,6 +142,10 @@ public class PlayerMovement : MonoBehaviour
             case 2:
                 ShootProjectile();
                 break;
+
+            case 3:
+                SpawnBomb();
+                break;
         }
     }
 
@@ -195,11 +200,11 @@ public class PlayerMovement : MonoBehaviour
                 sword.transform.localPosition = new Vector2(0, -0.5f);
                 sword.transform.localRotation = Quaternion.Euler(0, 0, 180);
                 break;
-            case 4: // esquerda
+            case 4:
                 sword.transform.localPosition = new Vector2(-0.5f, 0);
                 sword.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 break;
-            case 3: // direita
+            case 3:
                 sword.transform.localPosition = new Vector2(0.5f, 0);
                 sword.transform.localRotation = Quaternion.Euler(0, 0, 270);
                 break;
@@ -238,15 +243,32 @@ public class PlayerMovement : MonoBehaviour
                 rotation = Quaternion.Euler(0, 0, 90);
                 break;
         }
-        
 
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, rotation);
         Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), GetComponent<Collider2D>());
     
     }
 
-    public void TakeDamage(int attackDirection)
+    private void SpawnBomb()
     {
+        Vector2 spawnOffset = Vector2.zero;
+
+        switch (currentDirection)
+        {
+            case 1: spawnOffset = Vector2.up; break;
+            case 2: spawnOffset = Vector2.down; break;
+            case 4: spawnOffset = Vector2.left; break;
+            case 3: spawnOffset = Vector2.right; break;
+        }
+
+        Vector2 spawnPosition = rb.position + spawnOffset;
+
+        Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
+    }
+
+    public void TakeDamage(int attackDirection)
+    {   
+
         if (isInvincible || isDashing) return;
 
         currentHealth--;
@@ -291,8 +313,8 @@ private IEnumerator HurtRoutine()
         {
             case 1: knockbackDir = Vector2.up; break;
             case 2: knockbackDir = Vector2.down; break;
-            case 3: knockbackDir = Vector2.left; break;
-            case 4: knockbackDir = Vector2.right; break;
+            case 4: knockbackDir = Vector2.left; break;
+            case 3: knockbackDir = Vector2.right; break;
             default: knockbackDir = Vector2.zero; break;
         }
 
@@ -324,5 +346,10 @@ private IEnumerator HurtRoutine()
         spriteRenderer.enabled = true;
     }
 
+    public void KillInstantly()
+    {
+        currentHealth = 0;
+        Die();
+    }
 
 }
