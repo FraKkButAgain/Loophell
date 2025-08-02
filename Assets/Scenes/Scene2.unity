@@ -119,43 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &310717196 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 131012098950241421, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
-  m_PrefabInstance: {fileID: 2781148770817649233}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &310717198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 310717196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowDebugText: 0
-  ShowCameraFrustum: 1
-  IgnoreTimeScale: 0
-  WorldUpOverride: {fileID: 0}
-  ChannelMask: -1
-  UpdateMethod: 2
-  BlendUpdateMethod: 1
-  LensModeOverride:
-    Enabled: 0
-    DefaultMode: 2
-  DefaultBlend:
-    Style: 1
-    Time: 2
-    CustomCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  CustomBlends: {fileID: 0}
 --- !u!1001 &389000939
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1885,10 +1848,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 603328769270980205, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2864620766992743268, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
       propertyPath: swordPrefab
       value: 
@@ -1897,14 +1856,6 @@ PrefabInstance:
       propertyPath: swordAnimator
       value: 
       objectReference: {fileID: 790328610230882413, guid: 2db12085ba667614fb481d0183750534, type: 3}
-    - target: {fileID: 3834783065429549447, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4121841081336360984, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 5498934361992348499, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1945,30 +1896,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5823946210986075374, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5823946210986075374, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5823946210986075374, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7098785933682101659, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
       propertyPath: orthographic size
       value: 5.6523614
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 3834783065429549447, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 131012098950241421, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 310717198}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55f7573aeb2afa94ebac72ec886d7baa, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
