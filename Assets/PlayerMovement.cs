@@ -67,7 +67,11 @@ public class PlayerMovement : MonoBehaviour
         var keyboard = Keyboard.current;
         
 
-        if (keyboard != null)
+        if (isBlocking)
+        {
+            movement = Vector2.zero;
+        }
+        else
         {
             movement.x = (keyboard.leftArrowKey.isPressed ? -1f : 0f) + (keyboard.rightArrowKey.isPressed ? 1f : 0f);
             movement.y = (keyboard.downArrowKey.isPressed ? -1f : 0f) + (keyboard.upArrowKey.isPressed ? 1f : 0f);
@@ -235,6 +239,7 @@ public class PlayerMovement : MonoBehaviour
     
     private void ShootProjectile()
     {
+        animator.SetTrigger("Action");
         Vector3 spawnPosition = transform.position;
 
         Quaternion rotation = Quaternion.identity;
@@ -262,6 +267,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SpawnBomb()
     {
+        animator.SetTrigger("Action");
         Vector2 spawnOffset = Vector2.zero;
 
         switch (currentDirection)
@@ -278,12 +284,18 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private IEnumerator Block()
-        {
+        {   
+            animator.SetBool("IsBlocking", true);
+            animator.SetTrigger("Block");
+
             isBlocking = true;
             isInvincible = true;
             shieldObject.SetActive(true);
             rb.linearVelocity = Vector2.zero;
             canExitBlock = false;
+
+            movement = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
 
             yield return new WaitForSeconds(1f); 
 
@@ -399,6 +411,7 @@ private IEnumerator HurtRoutine()
         isBlocking = false;
         isInvincible = false;
         shieldObject.SetActive(false);
+        animator.SetBool("IsBlocking", false);
     }
 
 }

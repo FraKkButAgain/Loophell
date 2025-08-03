@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3648230203296025364}
   - component: {fileID: 6601400583365305680}
+  - component: {fileID: 5106488574898545909}
   m_Layer: 0
   m_Name: Square
   m_TagString: Enemy
@@ -27,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1049150058130204546}
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2283276462285821090, guid: f0153170a7c4c1e479c4dd6d08b73a66, type: 3}
+  m_Sprite: {fileID: 541315484257613868, guid: d4fe5eda47ceda04796c930d4a961b5e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -87,6 +88,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &5106488574898545909
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303476226824517566}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ecd3116765ca10540b7616074eb6d1f8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1175288568825576916
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,11 +158,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordPrefab: {fileID: 1175288568825576916, guid: 45f7ace66dc67f74a8650581ceef6a17, type: 3}
-  bombPrefab: {fileID: 0}
+  bombPrefab: {fileID: 1175288568825576916, guid: f81938642bf27774eaf9c80b694651db, type: 3}
   arrowPrefab: {fileID: 443870100169868094, guid: e50aa40aeeb7e2d408770652d84c76e2, type: 3}
   tileSize: 2
   maxHealth: 3
   actionSequence: 00000000000000000000000000000000000000000000000000000000
+  animator: {fileID: 5106488574898545909}
+  spriteRenderer: {fileID: 6601400583365305680}
   timeBetweenActions: 1.5
 --- !u!50 &7644527056542207938
 Rigidbody2D:

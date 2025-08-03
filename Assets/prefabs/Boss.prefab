@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6695544723220535476}
   - component: {fileID: 7605927266901695268}
+  - component: {fileID: 1644197931820321091}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -87,6 +88,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1644197931820321091
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079837078667883973}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5da1e93abae26294db0ae6f821023298, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4987707390451212132
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,6 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e90ffbe6c06c944aa28a6d744f31b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1644197931820321091}
   maxHealth: 20
   actionTime: 1.5
   actionSequence: 00000000

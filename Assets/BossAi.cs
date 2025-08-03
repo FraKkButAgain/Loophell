@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BossAI : MonoBehaviour
 {
+    public Animator animator;
+
     public int maxHealth = 20;
     public float actionTime = 1.5f;
     public List<int> actionSequence = new List<int> { 0 };
@@ -55,29 +57,36 @@ public class BossAI : MonoBehaviour
         switch (action)
         {
             case 0:
+                animator.SetTrigger("Attack");
                 yield return new WaitForSeconds(actionTime);
                 yield return new WaitForSeconds(actionTime);
                 yield return new WaitForSeconds(actionTime);
                 break;
 
             case 1:
+                animator.SetTrigger("Attack");
                 yield return StartCoroutine(SummonSwordAttack());
                 break;
 
             case 2:
+                animator.SetTrigger("Attack");
                 yield return StartCoroutine(SummonTripleSwordAttack());
                 break;
             case 3:
+                animator.SetTrigger("Attack");
                 yield return StartCoroutine(SummonWallLineAttack());
                 break;
 
             case 4:
+                animator.SetTrigger("Attack");
                 yield return StartCoroutine(SummonBombPushAttack());
                 break;
             case 5:
+                animator.SetTrigger("Attack");
                 yield return StartCoroutine(SummonBombDropAttack());
                 break;
             case 6:
+                animator.SetTrigger("Attack");
                 yield return StartCoroutine(SummonDoubleSideArrow1());
                 break;
 

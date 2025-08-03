@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2590736630193571137}
   - component: {fileID: 6969689999980325937}
+  - component: {fileID: 8451285087369607118}
   m_Layer: 0
   m_Name: sword_test_sprites_16
   m_TagString: Untagged
@@ -25,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47483937995319767}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1049150058130204546}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6969689999980325937
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -87,6 +88,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8451285087369607118
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47483937995319767}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c3c198acb50046b4080e07afc63de0e4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1175288568825576916
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d64b9d52eb0b35143950a063d667c052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifetime: 0.5
 --- !u!58 &4628704518363023132
 CircleCollider2D:
   m_ObjectHideFlags: 0

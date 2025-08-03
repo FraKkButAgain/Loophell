@@ -11,11 +11,12 @@ public class EnemyAI : MonoBehaviour
 
     public float tileSize = 2f;
     public int maxHealth = 3;
-    public List<int> actionSequence = new List<int> { 1, 5, 3, 5, 1, 5, 4, 5, 2, 5, 5};
+    public List<int> actionSequence = new List<int> { 1, 5, 3, 5, 1, 5, 4, 5, 2, 5, 5 };
+
+    public Animator animator; // Referência pública ao Animator no filho
+    public SpriteRenderer spriteRenderer; // Referência pública ao SpriteRenderer no filho
 
     private Rigidbody2D rb;
-
-    
     private int currentHealth;
     private int currentDirection = 1;
 
@@ -24,10 +25,10 @@ public class EnemyAI : MonoBehaviour
     private bool isPerformingAction = false;
     private Dictionary<int, Vector2> directionToVector;
 
-    
     void Start()
     {
         currentHealth = maxHealth;
+
         directionToVector = new Dictionary<int, Vector2>
         {
             { 1, Vector2.up },
@@ -35,9 +36,9 @@ public class EnemyAI : MonoBehaviour
             { 3, Vector2.left },
             { 4, Vector2.right }
         };
+
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(EnemyLoop());
-    
     }
 
     private IEnumerator EnemyLoop()
@@ -62,26 +63,21 @@ public class EnemyAI : MonoBehaviour
         Die();
     }
 
-    
     private IEnumerator PerformAction(int action)
     {
         isPerformingAction = true;
 
         switch (action)
         {
-            case 0: //nada
-            
+            case 0: // idle
+                animator.SetBool("IsWalking", false);
                 break;
 
-            case 1: // move direção (cima)
-            case 2: // baixo
-            case 3: // esquerda
-            case 4: // direita
+            case 1: case 2: case 3: case 4:
                 SetDirection(action);
-
                 break;
 
-            case 5: // move pra frente
+            case 5:
                 yield return MoveForward();
                 break;
 
@@ -96,67 +92,80 @@ public class EnemyAI : MonoBehaviour
             case 8:
                 ThrowBomb();
                 break;
-            default:
-
-                break;
         }
 
         isPerformingAction = false;
     }
 
-
-
-    // ações
     private IEnumerator MoveForward()
     {
+        animator.SetBool("IsWalking", true);
+
         Vector2 moveVector = directionToVector[currentDirection];
-        Vector2 targetPos = (Vector2)transform.position + moveVector * tileSize;
+        Vector2 startPos = transform.position;
+        Vector2 targetPos = startPos + moveVector * tileSize;
 
         float elapsedTime = 0f;
-        float moveDuration = timeBetweenActions;
-        Vector2 startPos = transform.position;
+        float duration = timeBetweenActions;
 
-        while (elapsedTime < moveDuration)
+        while (elapsedTime < duration)
         {
-            transform.position = Vector2.Lerp(startPos, targetPos, elapsedTime / moveDuration);
+            transform.position = Vector2.Lerp(startPos, targetPos, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         transform.position = targetPos;
-        yield break;
+        animator.SetBool("IsWalking", false);
     }
 
     private void SetDirection(int direction)
     {
         currentDirection = direction;
 
-        // colocar animações aqui depois #Frank
+        float dirValue = 0f;
+        switch (direction)
+        {
+            case 3: // esquerda
+                dirValue = -1f; 
+                spriteRenderer.flipX = false;
+                break;
+            case 4: // direita
+                dirValue = 1f;
+                spriteRenderer.flipX = true;
+                break;
+            default:
+                dirValue = 0f;
+                break;
+        }
+
+        animator.SetFloat("Direction", dirValue);
     }
 
     private void Attack()
     {
-        Vector2 spawnOffset = directionToVector[currentDirection] * 1;
+        animator.SetTrigger("Attack"); 
+        Vector2 spawnOffset = directionToVector[currentDirection] * 1f;
         Vector2 spawnPosition = (Vector2)transform.position + spawnOffset;
 
-
         GameObject sword = Instantiate(swordPrefab, spawnPosition, Quaternion.identity);
-
 
         float angle = 0f;
         switch (currentDirection)
         {
-            case 1: angle = 0f; break;     // cima
-            case 2: angle = 180f; break;   // baixo
-            case 3: angle = 90f; break;    // esquerda
-            case 4: angle = -90f; break;   // direita
+            case 1: angle = 0f; break;
+            case 2: angle = 180f; break;
+            case 3: angle = 90f; break;
+            case 4: angle = -90f; break;
         }
 
-        sword.transform.rotation = Quaternion.Euler(0, 0, angle);
+        sword.transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 
     private void ShootArrow()
     {
+        animator.SetTrigger("Shoot"); 
+
         Vector2 spawnOffset = directionToVector[currentDirection] * 1f;
         Vector2 spawnPosition = (Vector2)transform.position + spawnOffset;
 
@@ -165,10 +174,10 @@ public class EnemyAI : MonoBehaviour
         float angle = 0f;
         switch (currentDirection)
         {
-            case 1: angle = 0f; break;     // cima
-            case 2: angle = 180f; break;   // baixo
-            case 3: angle = 90f; break;    // esquerda
-            case 4: angle = -90f; break;   // direita
+            case 1: angle = 0f; break;
+            case 2: angle = 180f; break;
+            case 3: angle = 90f; break;
+            case 4: angle = -90f; break;
         }
 
         arrow.transform.rotation = Quaternion.Euler(0f, 0f, angle);
@@ -176,6 +185,7 @@ public class EnemyAI : MonoBehaviour
 
     private void ThrowBomb()
     {
+        animator.SetTrigger("Attack"); 
         Vector2 spawnOffset = directionToVector[currentDirection] * 1f;
         Vector2 spawnPosition = (Vector2)transform.position + spawnOffset;
 
@@ -184,24 +194,10 @@ public class EnemyAI : MonoBehaviour
         Bomb bombScript = bomb.GetComponent<Bomb>();
         if (bombScript != null)
         {
-            bombScript.PushInDirection(directionToVector[currentDirection], 2f); 
+            bombScript.PushInDirection(directionToVector[currentDirection], 2f);
         }
     }
 
-    // bullshit
-    private Vector3 GetDirectionVector()
-    {
-        return currentDirection switch
-        {
-            1 => Vector3.up,
-            2 => Vector3.down,
-            3 => Vector3.right,
-            4 => Vector3.left,
-            _ => Vector3.zero
-        };
-    }
-
-    // Dano
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
@@ -217,4 +213,3 @@ public class EnemyAI : MonoBehaviour
         Destroy(gameObject);
     }
 }
-
