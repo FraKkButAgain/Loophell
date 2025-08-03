@@ -58,6 +58,7 @@ public class BasicEnemyAI : MonoBehaviour
         {
             case 0:
                 animator.SetBool("IsWalking", false);
+                yield return new WaitForSeconds(2f);
                 break;
 
             case 1:
