@@ -3,11 +3,15 @@
   "WorkspaceRootPath": "E:\\projetos UNITY\\Loophell-main\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{56AD39FE-2376-BAB1-725D-8DA2172168DC}|Assembly-CSharp.csproj|e:\\projetos unity\\loophell-main\\assets\\scenes\\experimental\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{56AD39FE-2376-BAB1-725D-8DA2172168DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scenes\\experimental\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{56AD39FE-2376-BAB1-725D-8DA2172168DC}|Assembly-CSharp.csproj|e:\\projetos unity\\loophell-main\\assets\\scripts\\dialoguemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{56AD39FE-2376-BAB1-725D-8DA2172168DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\dialoguemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{56AD39FE-2376-BAB1-725D-8DA2172168DC}|Assembly-CSharp.csproj|e:\\projetos unity\\loophell-main\\assets\\scripts\\npc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{56AD39FE-2376-BAB1-725D-8DA2172168DC}|Assembly-CSharp.csproj|E:\\projetos UNITY\\Loophell-main\\assets\\scripts\\npc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{56AD39FE-2376-BAB1-725D-8DA2172168DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\npc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,11 +22,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "MainMenu.cs",
+              "DocumentMoniker": "E:\\projetos UNITY\\Loophell-main\\Assets\\Scenes\\Experimental\\MainMenu.cs",
+              "RelativeDocumentMoniker": "Assets\\Scenes\\Experimental\\MainMenu.cs",
+              "ToolTip": "E:\\projetos UNITY\\Loophell-main\\Assets\\Scenes\\Experimental\\MainMenu.cs",
+              "RelativeToolTip": "Assets\\Scenes\\Experimental\\MainMenu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-03T05:41:02.377Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "NPC.cs",
               "DocumentMoniker": "E:\\projetos UNITY\\Loophell-main\\Assets\\Scripts\\NPC.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\NPC.cs",
@@ -30,12 +47,11 @@
               "RelativeToolTip": "Assets\\Scripts\\NPC.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-03T02:28:27.194Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-03T02:28:27.194Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "DialogueManager.cs",
               "DocumentMoniker": "E:\\projetos UNITY\\Loophell-main\\Assets\\Scripts\\DialogueManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\DialogueManager.cs",

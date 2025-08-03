@@ -6,11 +6,41 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Experimental/TesteMainMenu.unity
+    guid: 59ac3557067862040b16b050cfff7207
+  - enabled: 1
     path: Assets/Scenes/Gameplay/000StartingArea.unity
     guid: 07ffba2fe62d41a42b83a8b4ee10117b
   - enabled: 1
     path: Assets/Scenes/Gameplay/001F.unity
     guid: 16b56a2527f343f49b14f71c527b6563
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/002F.unity
+    guid: f4874fbbafd7b85469a7f8f82bedf0c5
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/003F.unity
+    guid: 5fd160cf4a0fc8d42b0dcf49cdf37d87
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/004F.unity
+    guid: 5918a094e42332749b1eddfa982e5b8d
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/005F.unity
+    guid: 6b680d9e073905b479fe29b09b7e3360
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/006F.unity
+    guid: 5cbb7009994dfb94092887df108c6b3f
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/007F.unity
+    guid: ebe4d7661f2b4254ea76d6b0cd5f42af
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/008F.unity
+    guid: 5aedba3db4899ba43a30e3facd93afd1
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/009F.unity
+    guid: 8b533c542ad977243980ad9e4e7e542c
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/010F.unity
+    guid: c97ccd7f366870842bd3d5a3f70913cb
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
