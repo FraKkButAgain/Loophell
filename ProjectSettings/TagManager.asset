@@ -8,6 +8,7 @@ TagManager:
   - Bomb
   - Arrow
   - Shield
+  - Breakable
   layers:
   - Default
   - TransparentFX

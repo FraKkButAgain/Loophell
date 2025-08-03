@@ -2,30 +2,40 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D other)
+    public Vector2 explosionSize = new Vector2(2f, 2f);
+
+    public void Explode()
     {
-        if (other.CompareTag("Enemy"))
+        Vector2 center = transform.position;
+
+        Collider2D[] hits = Physics2D.OverlapBoxAll(center, explosionSize, 0f);
+
+        foreach (Collider2D hit in hits)
         {
 
-            EnemyAI enemy = other.GetComponent<EnemyAI>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(3);
 
+            if (hit.CompareTag("Enemy"))
+            {
+                EnemyAI enemy = hit.GetComponent<EnemyAI>();
+                if (enemy != null)
+                    enemy.TakeDamage(3);
+            }
+            else if (hit.CompareTag("Player"))
+            {
+                PlayerMovement player = hit.GetComponent<PlayerMovement>();
+                if (player != null)
+                    player.TakeDamage(0);
+            }
+            else if (hit.CompareTag("Breakable"))
+            {
+                Destroy(hit.gameObject);
             }
         }
-        else if (other.CompareTag("Player"))
-        {
-            PlayerMovement player = other.GetComponent<PlayerMovement>();
-            if (player != null)
-            {
-                player.TakeDamage(0);   
+    }
 
-            }
-        }
-        else if (other.CompareTag("Breakable"))
-        {
-            Destroy(other.gameObject);
-        }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, explosionSize);
     }
 }

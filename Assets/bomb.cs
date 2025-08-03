@@ -6,29 +6,56 @@ public class Bomb : MonoBehaviour
     public float selfDestructDelay = 0.5f;
     public GameObject explosionObject;
 
+    private Explosion explosion;
+
     private void Start()
     {
-        Invoke("Explode", fuseTime);
+        if (explosionObject != null)
+        {
+            explosion = explosionObject.GetComponent<Explosion>();
+            explosionObject.SetActive(false); 
+        }
+
+        Invoke(nameof(Explode), fuseTime);
     }
 
     private void Explode()
+{
+
+    Rigidbody2D rb = GetComponent<Rigidbody2D>();
+    if (rb != null)
     {
-
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.angularVelocity = 0f;
-            rb.bodyType = RigidbodyType2D.Static; 
-        }
-
-        if (explosionObject != null)
-        {
-            explosionObject.SetActive(true);
-        }
-
-        Destroy(gameObject, selfDestructDelay);
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+        rb.bodyType = RigidbodyType2D.Static;
     }
+
+
+    SpriteRenderer sr = GetComponent<SpriteRenderer>();
+    if (sr != null)
+    {
+        sr.enabled = false;
+    }
+
+    Collider2D col = GetComponent<Collider2D>();
+    if (col != null)
+    {
+        col.enabled = false;
+    }
+
+
+    if (explosionObject != null)
+    {
+        explosionObject.SetActive(true); 
+
+        if (explosion != null)
+        {
+            explosion.Explode(); 
+        }
+    }
+
+    Destroy(gameObject, selfDestructDelay);
+}
 
     public void PushInDirection(Vector2 direction, float distance)
     {
