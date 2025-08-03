@@ -13,7 +13,8 @@ public class EnemyArrow : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(transform.up * speed * Time.deltaTime);
+        Vector3 direction = transform.up.normalized;
+        transform.position += direction * speed * Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
