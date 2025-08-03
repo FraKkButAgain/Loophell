@@ -9,9 +9,11 @@ public class Sword : MonoBehaviour
     {
         Destroy(gameObject, duration);
     }
-
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
+
+
         if (other.CompareTag("Enemy"))
         {
             EnemyAI enemy = other.GetComponent<EnemyAI>();
@@ -20,5 +22,29 @@ public class Sword : MonoBehaviour
                 enemy.TakeDamage(damage);
             }
         }
+        else if (other.CompareTag("Bomb"))
+        {
+
+            Bomb bomb = other.GetComponent<Bomb>();
+            if (bomb != null)
+            {
+                Vector2 direction = GetDirectionFromRotation();
+                bomb.PushInDirection(direction, 3f);
+            }
+        }
+    }
+    
+ 
+        private Vector2 GetDirectionFromRotation()
+    {
+        float zRot = transform.rotation.eulerAngles.z;
+        zRot = Mathf.Round(zRot);
+
+        if (zRot == 0f) return Vector2.up;
+        if (zRot == 180f) return Vector2.down;
+        if (zRot == 90f) return Vector2.left;
+        if (zRot == 270f || zRot == -90f) return Vector2.right;
+
+        return Vector2.zero;
     }
 }

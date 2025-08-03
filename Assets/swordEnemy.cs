@@ -6,7 +6,7 @@ public class EnemySlash : MonoBehaviour
 
     void Start()
     {
-        // Destrói automaticamente após o tempo
+
         Destroy(gameObject, lifetime);
     }
 
@@ -16,13 +16,12 @@ public class EnemySlash : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            // Se o Body tiver o script, esse GetComponent vai funcionar
+
             PlayerMovement player = other.GetComponent<PlayerMovement>();
-            Debug.Log("[EnemySlash] Acertou o Player!");
+
             if (player != null)
             {
                 int direction = GetAttackDirectionFromRotation();
-                Debug.Log($"[EnemySlash] Direção do ataque: {direction}");
                 player.TakeDamage(direction);
             }
         }
