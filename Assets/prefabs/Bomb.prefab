@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c515201db214aa641af38f1887ccbdc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fuseTime: 5
+  fuseTime: 3
   selfDestructDelay: 0.5
   explosionObject: {fileID: 2369090737517196873}
 --- !u!1 &2369090737517196873

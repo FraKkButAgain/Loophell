@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - Bomb
+  - Arrow
+  - Shield
+  - Breakable
   layers:
   - Default
   - TransparentFX
