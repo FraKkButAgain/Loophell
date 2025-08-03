@@ -3,17 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
+    public Vector2 newPosition = new Vector2(0f, 4f);
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            int currentIndex = SceneManager.GetActiveScene().buildIndex;
-            int nextIndex = (currentIndex + 1) % SceneManager.sceneCountInBuildSettings;
+            // This will now work because SetSpawnPosition exists
+            PlayerSpawnSystem.Instance.SetSpawnPosition(newPosition);
 
-            // Debug info to check in Console
-            Debug.Log($"Current: {currentIndex} | Next: {nextIndex} | Total Scenes: {SceneManager.sceneCountInBuildSettings}");
+            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            if (nextSceneIndex >= SceneManager.sceneCountInBuildSettings)
+                nextSceneIndex = 0;
 
-            SceneManager.LoadScene(nextIndex);
+            SceneManager.LoadScene(nextSceneIndex);
         }
     }
 }
