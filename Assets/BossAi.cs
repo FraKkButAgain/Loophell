@@ -78,7 +78,7 @@ public class BossAI : MonoBehaviour
                 yield return StartCoroutine(SummonBombDropAttack());
                 break;
             case 6:
-                yield return StartCoroutine(SummonSideArrowAttack());
+                yield return StartCoroutine(SummonDoubleSideArrow1());
                 break;
 
             default:
@@ -185,44 +185,53 @@ public class BossAI : MonoBehaviour
 
         yield return new WaitForSeconds(actionTime); 
     }
-    
-   private IEnumerator SummonSideArrowAttack()
-    {
-        Vector3 bossPos = transform.position;
 
-
-        Vector3 leftWarningPos = new Vector3(-9f, bossPos.y - 4f, 0f);
-        Vector3 rightWarningPos = new Vector3(9f, bossPos.y - 4f, 0f);
-
-        GameObject leftWarning = Instantiate(warningPrefab, leftWarningPos, Quaternion.identity);
-        GameObject rightWarning = Instantiate(warningPrefab, rightWarningPos, Quaternion.identity);
-
-        yield return new WaitForSeconds(1.5f);
-
-        Destroy(leftWarning);
-        Destroy(rightWarning);
-
-
-        float[] yOffsets = new float[] { -5f, -6.5f, -8f, -9.5f };
-
-        for (int i = 0; i < yOffsets.Length; i++)
+    private IEnumerator SummonDoubleSideArrow1()
         {
-            float y = bossPos.y + yOffsets[i];
+            Vector3 bossPos = transform.position;
 
-            if (i < yOffsets.Length / 2)
+
+            List<GameObject> warnings = new List<GameObject>();
+
+            for (int y = -4; y >= -7; y--)
             {
-
-                ShootArrowFromPosition(new Vector2(-10f, y), 4);
+                Vector2 warningPos = new Vector2(9f, bossPos.y + y);
+                GameObject warning = Instantiate(warningPrefab, warningPos, Quaternion.identity);
+                warnings.Add(warning);
             }
-            else
+
+            for (int y = -8; y >= -11; y--)
             {
-
-                ShootArrowFromPosition(new Vector2(10f, y), 3);
+                Vector2 warningPos = new Vector2(-9f, bossPos.y + y); 
+                GameObject warning = Instantiate(warningPrefab, warningPos, Quaternion.identity);
+                warnings.Add(warning);
             }
+
+            yield return new WaitForSeconds(actionTime);
+
+
+            foreach (GameObject warning in warnings)
+            {
+                Destroy(warning);
+            }
+
+
+            for (int y = -3; y >= -6; y--)
+            {
+                Vector2 arrowPos = new Vector2(9f, bossPos.y + y);
+                ShootArrowFromPosition(arrowPos, 3);
+            }
+
+
+            for (int y = -7; y >= -10; y--)
+            {
+                Vector2 arrowPos = new Vector2(-9f, bossPos.y + y);
+                ShootArrowFromPosition(arrowPos, 4); 
+            }
+
+
         }
-
-        yield return new WaitForSeconds(1.5f);
-    }
+            
 
     private void SpawnSwordAtY(Vector3 bossPos, float relativeY)
     {
@@ -248,18 +257,19 @@ public class BossAI : MonoBehaviour
     }
 
     private void ShootArrowFromPosition(Vector2 position, int direction)
-    {
-        GameObject arrow = Instantiate(projectilePrefab, position, Quaternion.identity);
-
-        float angle = 0f;
-        switch (direction)
         {
-            case 1: angle = 0f; break;  
-            case 2: angle = 180f; break;  
-            case 3: angle = 90f; break;   
-            case 4: angle = -90f; break;  
+            float angle = 0f;
+
+            switch (direction)
+            {
+                case 1: angle = 0f; break;  
+                case 2: angle = 180f; break; 
+                case 3: angle = 90f; break; 
+                case 4: angle = -90f; break; 
+            }
+
+            Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
+            Instantiate(projectilePrefab, position, rotation);
         }
 
-        arrow.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-    }
 }

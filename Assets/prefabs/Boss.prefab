@@ -185,3 +185,5 @@ MonoBehaviour:
   swordAttackPrefab: {fileID: 1463590959227674666, guid: 379e33211d870424ba1a2195976913b4, type: 3}
   wallBreakPrefab: {fileID: 886900785169542197, guid: 9a4200ac5d1df52459e2c689c2234399, type: 3}
   bombPrefab: {fileID: 1175288568825576916, guid: f81938642bf27774eaf9c80b694651db, type: 3}
+  warningPrefab: {fileID: 8179991913493585713, guid: 2e993c75da7f60b4dad25065df4d77eb, type: 3}
+  projectilePrefab: {fileID: 443870100169868094, guid: e50aa40aeeb7e2d408770652d84c76e2, type: 3}
